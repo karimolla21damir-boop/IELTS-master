@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Prep Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo">IELTS Expert</div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('home')" class="active">🏠 Главная</a></li>
+            <li><a href="#" onclick="showSection('listening')">🎧 Listening</a></li>
+            <li><a href="#" onclick="showSection('reading')">📖 Reading</a></li>
+            <li><a href="#" onclick="showSection('writing')">✍️ Writing</a></li>
+            <li><a href="#" onclick="showSection('speaking')">🗣️ Speaking</a></li>
+        </ul>
+        <div class="user-box">
+            <p>Прогресс: <span id="user-score">0</span>%</p>
+        </div>
+    </nav>
+
+    <main class="content">
+        
+        <section id="home" class="page-section">
+            <h1>Добро пожаловать в систему обучения</h1>
+            <p class="subtitle">Выберите модуль для начала подготовки к экзамену IELTS.</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Listening</h3>
+                    <button class="btn" onclick="showSection('listening')">Начать</button>
+                </div>
+                <div class="stat-card">
+                    <h3>Reading</h3>
+                    <button class="btn" onclick="showSection('reading')">Начать</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="listening" class="page-section" style="display:none;">
+            <h2>🎧 Listening Module</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/nL6S9S8S8v8" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="quiz-card">
+                <h3>Практика</h3>
+                <p>Сколько секций в тесте Listening?</p>
+                <input type="text" id="ans-listening" placeholder="Ваш ответ...">
+                <button class="btn" onclick="checkAnswer('listening', '4')">Проверить</button>
+            </div>
+        </section>
+
+        </main>
+
+    <div id="ai-chat" class="chat-container">
+        <div class="chat-header">IELTS AI Assistant</div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="ai-input" placeholder="Спроси меня о IELTS...">
+            <button onclick="askAI()">></button>
+        </div>
+    </div>
+    <div class="chat-toggle" onclick="toggleChat()">🤖</div>
+
+    <script>
+        // Простая логика переключения разделов
+        function showSection(id) {
+            document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function checkAnswer(mod, correct) {
+            const userAns = document.getElementById('ans-' + mod).value;
+            if (userAns === correct) {
+                alert('Правильно! Ваш прогресс сохранен.');
+                document.getElementById('user-score').innerText = '25';
+            } else {
+                alert('Неверно. Попробуйте еще раз.');
+            }
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('ai-chat');
+            chat.classList.toggle('active');
+        }
+
+        function askAI() {
+            const input = document.getElementById('ai-input');
+            const msgs = document.getElementById('chat-messages');
+            if (!input.value) return;
+
+            msgs.innerHTML += `<div class="msg user"><b>Вы:</b> ${input.value}</div>`;
+            const reply = "Для подготовки к " + input.value + " советую учить по 10 новых слов в день.";
+            msgs.innerHTML += `<div class="msg ai"><b>AI:</b> ${reply}</div>`;
+            input.value = '';
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+    </script>
+</body>
+</html>
