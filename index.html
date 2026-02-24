@@ -3,115 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Prep Platform</title>
-    <link rel="stylesheet" href="style.css">
+    <title>IELTS Prep Platform | AI Powered</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+    <style>
+        :root { --primary: #6366f1; --dark: #0f172a; --bg: #f8fafc; --white: #ffffff; --text: #1e293b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
 
-    <nav class="sidebar">
-        <div class="logo">IELTS Expert</div>
-        <ul class="nav-links">
-            <li><a href="#" onclick="showSection('home')" class="active">🏠 Главная</a></li>
-            <li><a href="#" onclick="showSection('listening')">🎧 Listening</a></li>
-            <li><a href="#" onclick="showSection('reading')">📖 Reading</a></li>
-            <li><a href="#" onclick="showSection('writing')">✍️ Writing</a></li>
-            <li><a href="#" onclick="showSection('speaking')">🗣️ Speaking</a></li>
-        </ul>
-        <div class="user-box">
-            <p>Прогресс: <span id="user-score">0</span>%</p>
-        </div>
-    </nav>
+        /* Sidebar */
+        .sidebar { width: 260px; background: var(--dark); color: white; padding: 30px 20px; position: fixed; height: 100vh; z-index: 10; }
+        .logo { font-size: 24px; font-weight: 700; color: #818cf8; margin-bottom: 40px; }
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 10px; }
+        .nav-links a { color: #94a3b8; text-decoration: none; padding: 12px; display: block; border-radius: 8px; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover, .nav-links a.active { background: var(--primary); color: white; }
 
-    <main class="content">
-        
-        <section id="home" class="page-section">
-            <h1>Добро пожаловать в систему обучения</h1>
-            <p class="subtitle">Выберите модуль для начала подготовки к экзамену IELTS.</p>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Listening</h3>
-                    <button class="btn" onclick="showSection('listening')">Начать</button>
-                </div>
-                <div class="stat-card">
-                    <h3>Reading</h3>
-                    <button class="btn" onclick="showSection('reading')">Начать</button>
-                </div>
-            </div>
-        </section>
+        /* Main Content */
+        .content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
+        .page { display: none; max-width: 900px; margin: 0 auto; }
+        .page.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        <section id="listening" class="page-section" style="display:none;">
-            <h2>🎧 Listening Module</h2>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/nL6S9S8S8v8" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <div class="quiz-card">
-                <h3>Практика</h3>
-                <p>Сколько секций в тесте Listening?</p>
-                <input type="text" id="ans-listening" placeholder="Ваш ответ...">
-                <button class="btn" onclick="checkAnswer('listening', '4')">Проверить</button>
-            </div>
-        </section>
+        /* Cards & UI */
+        .card { background: var(--white); border-radius: 16px; padding: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        h1 { font-size: 28px; margin-bottom: 15px; }
+        .subtitle { color: #64748b; margin-bottom: 30px; }
+        .upload-zone { border: 2px dashed #cbd5e1; padding: 30px; border-radius: 12px; text-align: center; background: #f1f5f9; transition: 0.3s; }
+        .upload-zone:hover { border-color: var(--primary); background: #eef2ff; }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn:disabled { background: #94a3b8; cursor: not-allowed; }
 
-        </main>
+        /* File Library */
+        .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .file-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; text-align: center; position: relative; }
+        .file-card .icon { font-size: 32px; margin-bottom: 8px; }
+        .file-card .name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 10px; }
 
-    <div id="ai-chat" class="chat-container">
-        <div class="chat-header">IELTS AI Assistant</div>
-        <div id="chat-messages" class="chat-messages"></div>
-        <div class="chat-input">
-            <input type="text" id="ai-input" placeholder="Спроси меня о IELTS...">
-            <button onclick="askAI()">></button>
-        </div>
-    </div>
-    <div class="chat-toggle" onclick="toggleChat()">🤖</div>
+        /* AI Floating Chat */
+        .chat-toggle { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; box-shadow: 0 10px 25px rgba(99,102,241,0.5); z-index: 100; font-size: 28px; }
+        .chat-win { position: fixed; bottom: 110px; right: 30px; width: 360px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; z-index: 100; border: 1px solid #e2e8f0; overflow: hidden; }
+        .chat-win.show { display: flex; animation: slideUp 0.3s; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .chat-header { background: var(--dark); color: white; padding: 15px 20px; font-weight: 600; display: flex; justify-content: space-between; }
+        .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #f8fafc; }
+        .msg { padding: 10px 14px; border-radius: 12px; font-size: 14px; max-width: 85%; line-height: 1.5; }
+        .msg.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .msg.ai { background: white; color: var(--dark); border: 1px solid #e2e8f0; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-footer { padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .chat-footer input { flex: 1; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; outline: none; }
 
-    <script>
-        // Простая логика переключения разделов
-        function showSection(id) {
-            document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            event.target.classList.add('active');
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; padding: 20px 10px; }
+            .sidebar .logo, .sidebar span { display: none; }
+            .content { margin-left: 70px; width: calc(100% - 70px); padding: 20px; }
+            .chat-win { width: calc(100% - 40px); right: 20px; }
         }
-
-        function checkAnswer(mod, correct) {
-            const userAns = document.getElementById('ans-' + mod).value;
-            if (userAns === correct) {
-                alert('Правильно! Ваш прогресс сохранен.');
-                document.getElementById('user-score').innerText = '25';
-            } else {
-                alert('Неверно. Попробуйте еще раз.');
-            }
-        }
-
-        function toggleChat() {
-            const chat = document.getElementById('ai-chat');
-            chat.classList.toggle('active');
-        }
-
-        async function askAI() {
-    const input = document.getElementById('ai-input');
-    const apiKey = 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; // Секретный ключ
-    const text = input.value;
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [{role: "user", content: "Ты помощник по IELTS. Отвечай на вопрос: " + text}]
-        })
-    });
-
-    const data = await response.json();
-    const aiReply = data.choices[0].message.content;
-    
-    // Вывод в чат...
-    document.getElementById('chat-messages').innerHTML += `<div>${aiReply}</div>`;
-}
-    </script>
-</body>
-</html>
