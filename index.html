@@ -1,61 +1,105 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Prep Platform | AI Powered</title>
+    <title>IELTS Prep Hub | AI Powered</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #6366f1; --dark: #0f172a; --bg: #f8fafc; --white: #ffffff; --text: #1e293b; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+</head>
+<body>
 
-        /* Sidebar */
-        .sidebar { width: 260px; background: var(--dark); color: white; padding: 30px 20px; position: fixed; height: 100vh; z-index: 10; }
-        .logo { font-size: 24px; font-weight: 700; color: #818cf8; margin-bottom: 40px; }
-        .nav-links { list-style: none; }
-        .nav-links li { margin-bottom: 10px; }
-        .nav-links a { color: #94a3b8; text-decoration: none; padding: 12px; display: block; border-radius: 8px; transition: 0.3s; cursor: pointer; }
-        .nav-links a:hover, .nav-links a.active { background: var(--primary); color: white; }
+    <nav class="sidebar">
+        <div class="logo">IELTS AI</div>
+        <ul class="nav-links">
+            <li><a onclick="showPage('home')" id="link-home" class="active">🏠 <span>Dashboard</span></a></li>
+            <li><a onclick="showPage('listening')" id="link-listening">🎧 <span>Listening</span></a></li>
+            <li><a onclick="showPage('reading')" id="link-reading">📖 <span>Reading</span></a></li>
+            <li><a onclick="showPage('writing')" id="link-writing">✍️ <span>Writing</span></a></li>
+            <li><a onclick="showPage('speaking')" id="link-speaking">🗣️ <span>Speaking</span></a></li>
+        </ul>
+    </nav>
 
-        /* Main Content */
-        .content { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
-        .page { display: none; max-width: 900px; margin: 0 auto; }
-        .page.active { display: block; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    <main class="content">
+        <section id="home" class="page active">
+            <h1>Student Dashboard</h1>
+            <p class="subtitle">Welcome back! Upload your PDF tests and video lessons to the modules below. Your AI Assistant is ready to help 24/7.</p>
+            
+            <div class="card">
+                <h3>Getting Started:</h3>
+                <ul style="margin-top:15px; margin-left:20px; line-height:1.8;">
+                    <li>Navigate to a specific module via the sidebar (e.g., Writing).</li>
+                    <li>Upload your materials (PDF or Video) to build your library.</li>
+                    <li>Use the AI Chat in the corner to check your essays or ask grammar questions.</li>
+                </ul>
+            </div>
+        </section>
 
-        /* Cards & UI */
-        .card { background: var(--white); border-radius: 16px; padding: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid #e2e8f0; }
-        h1 { font-size: 28px; margin-bottom: 15px; }
-        .subtitle { color: #64748b; margin-bottom: 30px; }
-        .upload-zone { border: 2px dashed #cbd5e1; padding: 30px; border-radius: 12px; text-align: center; background: #f1f5f9; transition: 0.3s; }
-        .upload-zone:hover { border-color: var(--primary); background: #eef2ff; }
-        .btn { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
-        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+        <section id="module-view" class="page">
+            <h1 id="module-title">Module</h1>
+            <p class="subtitle">Your personal library of study materials.</p>
+            
+            <div class="card">
+                <div class="upload-zone">
+                    <p>Drag and drop your files here or click the button below</p>
+                    <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Supported formats: PDF, MP4, MKV</p>
+                    <input type="file" id="file-input" style="display: none;" accept=".pdf, .mp4, .mkv" onchange="handleFileUpload()">
+                    <button class="btn" onclick="document.getElementById('file-input').click()">Browse Files</button>
+                </div>
+            </div>
 
-        /* File Library */
-        .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .file-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; text-align: center; position: relative; }
-        .file-card .icon { font-size: 32px; margin-bottom: 8px; }
-        .file-card .name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 10px; }
+            <div class="card">
+                <h3>📚 My Materials</h3>
+                <div id="file-list" class="file-grid">
+                    </div>
+            </div>
+        </section>
+    </main>
 
-        /* AI Floating Chat */
-        .chat-toggle { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; box-shadow: 0 10px 25px rgba(99,102,241,0.5); z-index: 100; font-size: 28px; }
-        .chat-win { position: fixed; bottom: 110px; right: 30px; width: 360px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; z-index: 100; border: 1px solid #e2e8f0; overflow: hidden; }
-        .chat-win.show { display: flex; animation: slideUp 0.3s; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .chat-header { background: var(--dark); color: white; padding: 15px 20px; font-weight: 600; display: flex; justify-content: space-between; }
-        .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #f8fafc; }
-        .msg { padding: 10px 14px; border-radius: 12px; font-size: 14px; max-width: 85%; line-height: 1.5; }
-        .msg.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .msg.ai { background: white; color: var(--dark); border: 1px solid #e2e8f0; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .chat-footer { padding: 15px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
-        .chat-footer input { flex: 1; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; outline: none; }
+    <div id="chat-window" class="chat-win">
+        <div class="chat-header">
+            <span>IELTS AI Tutor (Gemini)</span>
+            <span style="cursor:pointer" onclick="toggleChat()">✕</span>
+        </div>
+        <div id="chat-body" class="chat-body">
+            <div class="msg ai">Hi there! I'm your AI tutor. I can grade your essays, explain complex grammar, or help with translations. What shall we study today?</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Ask me anything...">
+            <button class="btn" id="send-btn" onclick="sendMsg()">></button>
+        </div>
+    </div>
+    <div class="chat-toggle" onclick="toggleChat()">🤖</div>
 
-        @media (max-width: 768px) {
-            .sidebar { width: 70px; padding: 20px 10px; }
-            .sidebar .logo, .sidebar span { display: none; }
-            .content { margin-left: 70px; width: calc(100% - 70px); padding: 20px; }
-            .chat-win { width: calc(100% - 40px); right: 20px; }
+    <script>
+        // ==========================================
+        // AI CONFIGURATION
+        // ==========================================
+        const GEMINI_API_KEY = "YOUR_API_KEY_HERE"; 
+        
+        let currentModule = '';
+        const storage = { listening: [], reading: [], writing: [], speaking: [] };
+
+        // Page switching logic
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+            if (pageId === 'home') {
+                document.getElementById('home').classList.add('active');
+                document.getElementById('link-home').classList.add('active');
+            } else {
+                currentModule = pageId;
+                document.getElementById('module-view').classList.add('active');
+                document.getElementById('link-' + pageId).classList.add('active');
+                document.getElementById('module-title').innerText = pageId.charAt(0).toUpperCase() + pageId.slice(1);
+                renderFiles();
+            }
         }
+
+        // Local file "upload" simulation
+        function handleFileUpload() {
+            const input = document.getElementById('file-input');
+            if (!input.files[0]) return;
+
+            const file = input.files[0];
