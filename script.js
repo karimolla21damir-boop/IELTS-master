@@ -5,59 +5,30 @@ const GEMINI_API_KEY = "AIzaSyCwoBHaBeAwrJ01gbqQUQTa58BgIj9vJoI";
 const db = {
     listening: [
         { 
-            title: "Cambridge 18: Test 1", 
-            desc: "Section 1: Notes completion about a transport survey.",
-            pdf: "materials/listening/c18_test1.pdf",
-            audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Пример аудио
-            level: "Easy"
-        },
-        { 
-            title: "Map Labeling Practice", 
-            desc: "Section 2: Layout of a local community center.",
-            pdf: "materials/listening/map_task.pdf",
-            audio: "#",
-            level: "Medium"
+            title: "Listening guide", 
+            desc: "Learn about IELTS listening test structur",
+            pdf: "materials/listening.pdf",
         }
     ],
     reading: [
         { 
-            title: "The History of Tea", 
-            desc: "Academic Reading Passage 1: T/F/NG and Summary Completion.",
-            pdf: "materials/reading/tea_history.pdf",
-            level: "Medium"
-        },
-        { 
-            title: "Climate Change Effects", 
-            desc: "Academic Reading Passage 3: Matching Headings and MCQ.",
-            pdf: "materials/reading/climate_task.pdf",
-            level: "Hard"
-        }
+            title: "Reading guide", 
+            desc: "Learn about IELTS reading test structur",
+            pdf: "materials/reading.pdf",
     ],
     writing: [
         { 
-            title: "Task 1: Line Graph", 
-            desc: "Describe changes in energy consumption (1980-2020).",
-            pdf: "materials/writing/line_graph.pdf",
-            level: "Medium"
+            title: "Writing guide", 
+            desc: "Learn about IELTS writing test structure.",
+            pdf: "materials/writing.pdf",
         },
-        { 
-            title: "Task 2: Essay Question", 
-            desc: "Topic: Should government fund arts or public services?",
-            pdf: "materials/writing/essay_task.pdf",
-            level: "Hard"
-        }
     ],
     speaking: [
         { 
-            title: "Part 1: Daily Routine", 
-            desc: "Questions about your morning, study habits, and hobbies.",
-            level: "Easy"
+            title: "Speaking guide", 
+            desc: "Learn about IELTS speaking test structure",
+            pdf: "materials/speaking.pdf",
         },
-        { 
-            title: "Part 2: Cue Card", 
-            desc: "Describe a book you read that was useful to you.",
-            level: "Medium"
-        }
     ]
 };
 
