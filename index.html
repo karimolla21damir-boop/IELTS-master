@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Prep Platform</title>
+    <title>IELTS Prep Academy | AI Tutor</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav class="sidebar">
-        <div class="logo">IELTS Expert</div>
+        <div class="logo">IELTS AI</div>
         <ul class="nav-links">
             <li><a onclick="showModule('home')" id="btn-home" class="active">🏠 Dashboard</a></li>
-            <hr>
+            <div class="nav-label">PRACTICE ZONE</div>
             <li><a onclick="showModule('listening')" id="btn-listening">🎧 Listening</a></li>
             <li><a onclick="showModule('reading')" id="btn-reading">📖 Reading</a></li>
             <li><a onclick="showModule('writing')" id="btn-writing">✍️ Writing</a></li>
@@ -28,15 +28,18 @@
 
     <div id="chat-window" class="chat-win">
         <div class="chat-header">
-            <span>AI Tutor (Gemini)</span>
-            <span style="cursor:pointer" onclick="toggleChat()">✕</span>
+            <span>IELTS AI Tutor</span>
+            <span onclick="toggleChat()" style="cursor:pointer">✕</span>
         </div>
-        <div id="chat-body" class="chat-body"></div>
+        <div id="chat-body" class="chat-body">
+            <div class="msg ai">Hello! I am your personal IELTS coach. Choose a task and ask me if you need help with grammar, vocabulary, or checking your essay.</div>
+        </div>
         <div class="chat-footer">
-            <input type="text" id="chat-input" placeholder="Ask a question...">
-            <button onclick="sendMsg()">></button>
+            <input type="text" id="chat-input" placeholder="Ask your tutor...">
+            <button id="send-btn" onclick="sendMsg()">></button>
         </div>
     </div>
+
     <div class="chat-toggle" onclick="toggleChat()">🤖</div>
 
     <script src="script.js"></script>
