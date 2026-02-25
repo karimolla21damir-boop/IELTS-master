@@ -15,6 +15,7 @@ const db = {
             title: "Reading guide", 
             desc: "Learn about IELTS reading test structur",
             pdf: "materials/reading.pdf",
+        }    
     ],
     writing: [
         { 
