@@ -1,5 +1,5 @@
 // ВСТАВЬ СВОЙ КЛЮЧ GEMINI НИЖЕ
-const GEMINI_API_KEY = "AIzaSyCwoBHaBeAwrJ01gbqQUQTa58BgIj9vJoI";
+const GEMINI_API_KEY = "AIzaSyDuCMhUwxSMElY8vpPofayf-lTyNmLlDww";
 
 // Реальные задания (структура Cambridge IELTS)
 const db = {
