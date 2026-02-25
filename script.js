@@ -1,140 +1,151 @@
+// ВСТАВЬ СВОЙ КЛЮЧ GEMINI НИЖЕ
 const GEMINI_API_KEY = "AIzaSyCwoBHaBeAwrJ01gbqQUQTa58BgIj9vJoI";
+
+// Реальные задания (структура Cambridge IELTS)
 const db = {
     listening: [
         { 
-            name: "IELTS Listening Practice Test 1", 
-            url: "materials/listening/test1.pdf", // Путь к файлу в твоем репозитории
-            type: "pdf", 
-            date: "Pre-installed" 
+            title: "Cambridge 18: Test 1", 
+            desc: "Section 1: Notes completion about a transport survey.",
+            pdf: "materials/listening/c18_test1.pdf",
+            audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Пример аудио
+            level: "Easy"
         },
         { 
-            name: "Video Lesson: Listening Strategies", 
-            url: "materials/listening/lesson1.mp4", 
-            type: "video", 
-            date: "Pre-installed" 
+            title: "Map Labeling Practice", 
+            desc: "Section 2: Layout of a local community center.",
+            pdf: "materials/listening/map_task.pdf",
+            audio: "#",
+            level: "Medium"
         }
     ],
     reading: [
         { 
-            name: "Academic Reading Task: Ecology", 
-            url: "materials/reading/ecology_task.pdf", 
-            type: "pdf", 
-            date: "Pre-installed" 
+            title: "The History of Tea", 
+            desc: "Academic Reading Passage 1: T/F/NG and Summary Completion.",
+            pdf: "materials/reading/tea_history.pdf",
+            level: "Medium"
+        },
+        { 
+            title: "Climate Change Effects", 
+            desc: "Academic Reading Passage 3: Matching Headings and MCQ.",
+            pdf: "materials/reading/climate_task.pdf",
+            level: "Hard"
         }
     ],
-    writing: [],
-    speaking: []
+    writing: [
+        { 
+            title: "Task 1: Line Graph", 
+            desc: "Describe changes in energy consumption (1980-2020).",
+            pdf: "materials/writing/line_graph.pdf",
+            level: "Medium"
+        },
+        { 
+            title: "Task 2: Essay Question", 
+            desc: "Topic: Should government fund arts or public services?",
+            pdf: "materials/writing/essay_task.pdf",
+            level: "Hard"
+        }
+    ],
+    speaking: [
+        { 
+            title: "Part 1: Daily Routine", 
+            desc: "Questions about your morning, study habits, and hobbies.",
+            level: "Easy"
+        },
+        { 
+            title: "Part 2: Cue Card", 
+            desc: "Describe a book you read that was useful to you.",
+            level: "Medium"
+        }
+    ]
 };
+
+// Функция отображения контента
 function showModule(moduleName) {
-    // Обновляем активную кнопку в меню
+    // Обновляем активную кнопку
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
     document.getElementById('btn-' + moduleName).classList.add('active');
 
-    const display = document.getElementById('display-area');
+    const area = document.getElementById('display-area');
 
     if (moduleName === 'home') {
-        display.innerHTML = `
-            <h1>Student Dashboard</h1>
-            <p>Select a module from the sidebar to start uploading and practicing.</p>
-            <div class="card" style="margin-top:20px">
-                <h3>Welcome back!</h3>
-                <p>Track your progress and access your saved materials here.</p>
+        area.innerHTML = `
+            <h1>Good Morning, Scholar!</h1>
+            <p class="subtitle">Ready to boost your IELTS score? Select a section to start practicing.</p>
+            <div class="card">
+                <h3>Your Weekly Goal</h3>
+                <p>Complete 2 Listening and 1 Writing task today to stay on track.</p>
             </div>
         `;
         return;
     }
 
-    // Интерфейс конкретного модуля
-    display.innerHTML = `
-        <h1 style="text-transform: capitalize;">${moduleName} Module</h1>
-        <p class="subtitle">Manage your PDF tasks and Video lessons for ${moduleName}.</p>
+    // Отрисовка заданий
+    let tasksHtml = `<h1 style="text-transform: capitalize;">${moduleName} Practice</h1>
+                     <p class="subtitle">Real Cambridge-style tasks for your preparation.</p>
+                     <div class="task-grid">`;
 
-        <div class="upload-grid">
-            <div class="upload-box">
-                <h4>📄 Upload PDF Task</h4>
-                <input type="file" id="pdf-input" accept=".pdf" style="display:none" onchange="uploadFile('${moduleName}', 'pdf')">
-                <button class="btn-upload" onclick="document.getElementById('pdf-input').click()">Choose PDF</button>
-            </div>
-            <div class="upload-box">
-                <h4>🎥 Upload Video Lesson</h4>
-                <input type="file" id="video-input" accept=".mp4,.mkv" style="display:none" onchange="uploadFile('${moduleName}', 'video')">
-                <button class="btn-upload" onclick="document.getElementById('video-input').click()">Choose Video</button>
-            </div>
-        </div>
-
-        <h3>My Materials</h3>
-        <div id="library-${moduleName}" class="library-grid">
-            </div>
-    `;
-
-    renderLibrary(moduleName);
-}
-
-// 2. Функция "загрузки" файла
-function uploadFile(module, type) {
-    const inputId = type === 'pdf' ? 'pdf-input' : 'video-input';
-    const file = document.getElementById(inputId).files[0];
-
-    if (file) {
-        const fileData = {
-            name: file.name,
-            url: URL.createObjectURL(file),
-            type: type,
-            date: new Date().toLocaleDateString()
-        };
-        db[module].push(fileData);
-        renderLibrary(module);
-    }
-}
-
-// 3. Отображение списка файлов
-function renderLibrary(module) {
-    const container = document.getElementById(`library-${module}`);
-    if (!container) return;
-
-    container.innerHTML = db[module].length === 0 ? '<p>No materials uploaded yet.</p>' : '';
-
-    db[module].forEach(file => {
-        container.innerHTML += `
-            <div class="item-card">
-                <span class="type-tag tag-${file.type}">${file.type}</span>
-                <div style="font-weight:600; margin-bottom:10px; font-size:14px">${file.name}</div>
-                <div style="font-size:11px; color:gray; margin-bottom:15px">Added: ${file.date}</div>
-                <a href="${file.url}" target="_blank" class="btn-upload" style="text-decoration:none; display:inline-block; font-size:12px">View Material</a>
+    db[moduleName].forEach(task => {
+        tasksHtml += `
+            <div class="card task-card">
+                <span class="badge ${task.level}">${task.level}</span>
+                <h3 style="margin-bottom:10px">${task.title}</h3>
+                <p style="font-size:14px; color:#64748b; margin-bottom:15px">${task.desc}</p>
+                ${task.audio && task.audio !== '#' ? `<audio controls src="${task.audio}" style="width:100%; margin-bottom:15px"></audio>` : ''}
+                <a href="${task.pdf || '#'}" target="_blank" class="btn-main">Open Task PDF</a>
             </div>
         `;
     });
+
+    tasksHtml += `</div>`;
+    area.innerHTML = tasksHtml;
 }
 
-// Инициализация при загрузке
-window.onload = () => showModule('home');
-
-// Логика чата (Gemini)
-function toggleChat() { document.getElementById('chat-window').classList.toggle('show'); }
+// Управление чатом
+function toggleChat() {
+    document.getElementById('chat-window').classList.toggle('show');
+}
 
 async function sendMsg() {
     const input = document.getElementById('chat-input');
     const body = document.getElementById('chat-body');
+    const btn = document.getElementById('send-btn');
     const text = input.value.trim();
+
     if (!text) return;
 
     body.innerHTML += `<div class="msg user">${text}</div>`;
     input.value = '';
     body.scrollTop = body.scrollHeight;
 
-    const loadId = "load-" + Date.now();
-    body.innerHTML += `<div class="msg ai" id="${loadId}">Thinking...</div>`;
+    const loadId = "ai-" + Date.now();
+    body.innerHTML += `<div class="msg ai" id="${loadId}">Analyzing...</div>`;
+    btn.disabled = true;
 
     try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: "IELTS Expert mode: " + text }] }] })
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: "You are a professional IELTS tutor. Provide helpful, academic feedback or answers. Question: " + text }] }]
+            })
         });
-        const data = await res.json();
-        document.getElementById(loadId).innerText = data.candidates[0].content.parts[0].text;
+        const data = await response.json();
+        const reply = data.candidates[0].content.parts[0].text;
+        document.getElementById(loadId).innerText = reply;
     } catch (e) {
-        document.getElementById(loadId).innerText = "API Error. Check your key.";
+        document.getElementById(loadId).innerText = "Error: Check your API key.";
+    } finally {
+        btn.disabled = false;
+        body.scrollTop = body.scrollHeight;
     }
-    body.scrollTop = body.scrollHeight;
 }
+
+// Запуск при загрузке
+window.onload = () => showModule('home');
+
+// Enter для отправки
+document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMsg();
+});
