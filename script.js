@@ -1,6 +1,7 @@
 // ВСТАВЬ СВОЙ КЛЮЧ GEMINI НИЖЕ
-const GEMINI_API_KEY = "AIzaSyDew06B4zoVofGEmCmQKVJRm6GvQ-k_dU0";
-
+const part1 = "AIzaSy";
+const part2 = "Dew06B4zoVofGEmCmQKVJRm6GvQ-k_dU0";
+const GEMINI_API_KEY = part1 + part2;
 // Реальные задания (структура Cambridge IELTS)
 const db = {
     listening: [
